@@ -29,9 +29,9 @@ public class SlotBlock extends Slot {
         super.onSlotChanged();
         if (this.inventory instanceof TileEntity) {
             TileEntity tileentity = ((TileEntity) this.inventory);
-            tileentity.worldObj.markBlockForUpdate(tileentity.xCoord,
-                                                   tileentity.yCoord,
-                                                   tileentity.zCoord);
+            tileentity.getWorldObj().markBlockForUpdate(tileentity.xCoord,
+                                                        tileentity.yCoord,
+                                                        tileentity.zCoord);
         }
     }
 

@@ -18,9 +18,9 @@ public class BlockWirelessCamouRenderer implements ISimpleBlockRenderingHandler 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         if (block instanceof BlockRedstoneWireless) {
-            TileEntity tileentity = world.getBlockTileEntity(x,
-                                                             y,
-                                                             z);
+            TileEntity tileentity = world.getTileEntity(x,
+                                                        y,
+                                                        z);
             if (tileentity != null
                 && tileentity instanceof TileEntityRedstoneWireless) {
                 TileEntityRedstoneWireless tRW = (TileEntityRedstoneWireless) tileentity;
@@ -41,7 +41,7 @@ public class BlockWirelessCamouRenderer implements ISimpleBlockRenderingHandler 
     }
 
     @Override
-    public boolean shouldRender3DInInventory() {
+    public boolean shouldRender3DInInventory(int modelID) {
         return false;
     }
 

@@ -20,7 +20,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 
 /**
  * Wireless Slimevoid additions initializing class.
@@ -32,7 +31,6 @@ import cpw.mods.fml.common.network.NetworkMod;
         name = CoreLib.MOD_NAME,
         version = CoreLib.MOD_VERSION,
         dependencies = CoreLib.MOD_DEPENDENCIES)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class WirelessCamouflager {
     @SidedProxy(
             clientSide = CoreLib.CLIENT_PROXY,
@@ -49,6 +47,7 @@ public class WirelessCamouflager {
      */
     @EventHandler
     public void WirelessCamouflagerPreInit(FMLPreInitializationEvent event) {
+        CamouCore.initialize();
     }
 
     /**
@@ -58,7 +57,6 @@ public class WirelessCamouflager {
      */
     @EventHandler
     public void WirelessCamouflagerInit(FMLInitializationEvent event) {
-        CamouCore.initialize();
     }
 
     /**

@@ -1,5 +1,6 @@
 package wirelessredstone.addon.camouflager.overrides;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -83,7 +84,7 @@ public class TileEntityCamouflageOverride implements
             data.setBlockRef(null);
             tileEntityRedstoneWireless.setAdditionalData(CoreLib.MOD_ID,
                                                          data);
-            tileEntityRedstoneWireless.onInventoryChanged();
+            tileEntityRedstoneWireless.markDirty();
             return stackcopy;
         }
         stackcopy = data.getBlockRef().splitStack(amount);
@@ -92,7 +93,7 @@ public class TileEntityCamouflageOverride implements
             tileEntityRedstoneWireless.setAdditionalData(CoreLib.MOD_ID,
                                                          data);
         }
-        tileEntityRedstoneWireless.onInventoryChanged();
+        tileEntityRedstoneWireless.markDirty();
         return stackcopy;
     }
 
@@ -121,11 +122,11 @@ public class TileEntityCamouflageOverride implements
     }
 
     @Override
-    public void onBlockRemoval(TileEntityRedstoneWireless tileEntityRedstoneWireless, int side, int metadata) {
+    public void onBlockRemoval(TileEntityRedstoneWireless tileEntityRedstoneWireless, Block block, int metadata) {
         ItemStack blockRef = CamouLib.getBlockRef(tileEntityRedstoneWireless.getWorldObj(),
                                                   tileEntityRedstoneWireless);
         if (blockRef != null) {
-            CamouLib.dropItem(tileEntityRedstoneWireless.worldObj,
+            CamouLib.dropItem(tileEntityRedstoneWireless.getWorldObj(),
                               tileEntityRedstoneWireless.xCoord,
                               tileEntityRedstoneWireless.yCoord,
                               tileEntityRedstoneWireless.zCoord,

@@ -24,7 +24,7 @@ import wirelessredstone.tileentity.TileEntityRedstoneWireless;
 public class ItemRedstoneWirelessCamouflager extends Item {
 
     public ItemRedstoneWirelessCamouflager(int i) {
-        super(i);
+        super();
         setCreativeTab(WRCore.wirelessRedstone);
         maxStackSize = 1;
         setMaxDamage(64);
@@ -32,9 +32,9 @@ public class ItemRedstoneWirelessCamouflager extends Item {
 
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float a, float b, float c) {
-        TileEntity tileentity = world.getBlockTileEntity(i,
-                                                         j,
-                                                         k);
+        TileEntity tileentity = world.getTileEntity(i,
+                                                    j,
+                                                    k);
 
         if (tileentity != null
             && tileentity instanceof TileEntityRedstoneWireless) {

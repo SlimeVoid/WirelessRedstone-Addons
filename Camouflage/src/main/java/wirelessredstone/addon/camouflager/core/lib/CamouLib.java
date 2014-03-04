@@ -5,7 +5,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
@@ -19,7 +19,7 @@ public class CamouLib {
         if (blockRef == null) {
             return null;
         }
-        return Block.blocksList[blockRef.getItem().itemID];
+        return Block.getBlockFromItem(blockRef.getItem());
     }
 
     public static void setBlockRef(World world, TileEntityRedstoneWireless tRW, ItemStack blockRef) {
@@ -54,15 +54,14 @@ public class CamouLib {
         }
     }
 
-    public static Icon getIconForTile(TileEntityRedstoneWireless tRW, int side, Icon output) {
+    public static IIcon getIconForTile(TileEntityRedstoneWireless tRW, int side, IIcon output) {
         CamouAddonData data = (CamouAddonData) tRW.getAdditionalData(CoreLib.MOD_ID);
         if (data != null) {
             ItemStack itemstack = data.getBlockRef();
             if (itemstack != null) {
-                int blockID = itemstack.itemID;
                 int damage = itemstack.getItemDamage();
-                return Block.blocksList[blockID].getIcon(side,
-                                                         damage);
+                return Block.getBlockFromItem(itemstack.getItem()).getIcon(side,
+                                                                           damage);
             }
         }
         return output;
@@ -75,8 +74,8 @@ public class CamouLib {
         }
         NBTTagCompound addonTag = new NBTTagCompound();
         data.writeToNBT(addonTag);
-        nbttagcompound.setCompoundTag(CoreLib.MOD_ID,
-                                      addonTag);
+        nbttagcompound.setTag(CoreLib.MOD_ID,
+                              addonTag);
     }
 
     public static void readFromNBT(TileEntityRedstoneWireless tileEntityRedstoneWireless, NBTTagCompound nbttagcompound) {
@@ -87,7 +86,7 @@ public class CamouLib {
             tileEntityRedstoneWireless.setAdditionalData(CoreLib.MOD_ID,
                                                          newData);
         } else {
-            FMLCommonHandler.instance().getFMLLogger().warning("Could not read Camouflage NBT from tile");
+            FMLCommonHandler.instance().getFMLLogger().warn("Could not read Camouflage NBT from tile");
         }
     }
 
@@ -95,7 +94,7 @@ public class CamouLib {
         return itemstack != null
                && itemstack.getItem() != null
                && itemstack.getItem() instanceof ItemBlock
-               && !Block.blocksList[itemstack.itemID].hasTileEntity(itemstack.getItemDamage());
+               && !Block.getBlockFromItem(itemstack.getItem()).hasTileEntity(itemstack.getItemDamage());
     }
 
     public static void dropItem(World world, int x, int y, int z, ItemStack itemstack) {
@@ -119,7 +118,7 @@ public class CamouLib {
             data = new CamouAddonData();
             tileentity.setAdditionalData(CoreLib.MOD_ID,
                                          data);
-            tileentity.onInventoryChanged();
+            tileentity.markDirty();
         }
     }
 }

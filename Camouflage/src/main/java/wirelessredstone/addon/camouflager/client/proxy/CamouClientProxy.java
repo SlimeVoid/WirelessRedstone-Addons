@@ -12,11 +12,7 @@
 package wirelessredstone.addon.camouflager.client.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.camouflager.client.presentation.BlockWirelessCamouRenderer;
@@ -48,9 +44,9 @@ public class CamouClientProxy extends CamouCommonProxy {
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileentity = world.getBlockTileEntity(x,
-                                                         y,
-                                                         z);
+        TileEntity tileentity = world.getTileEntity(x,
+                                                    y,
+                                                    z);
         if (tileentity instanceof TileEntityRedstoneWireless) {
             return new GuiRedstoneWirelessCamouflager(new ContainerCamouflagedRedstoneWireless(player.inventory, (TileEntityRedstoneWireless) tileentity));
         }
@@ -66,36 +62,11 @@ public class CamouClientProxy extends CamouCommonProxy {
     public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz) {
     }
 
-    /**
-     * Retrieves the world object with NetHandler parameters.
-     * 
-     * @return Minecraft world object.
-     */
-    @Override
-    public World getWorld(NetHandler handler) {
-        if (handler instanceof NetClientHandler) {
-            return ((NetClientHandler) handler).getPlayer().worldObj;
-        }
-        return null;
-    }
-
-    @Override
-    public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
-        World world = getWorld(handler);
-        if (world != null) {
-            // ClientPacketHandler.sendPacket(((new
-            // PacketRedstoneEther(PacketRedstoneWirelessCommands.wirelessCommands.fetchEther.toString())).getPacket()));
-        }
-    }
-
     @Override
     public void initPacketHandlers() {
         super.initPacketHandlers();
         // ///////////////////
         // Client Handlers //
         // ///////////////////
-        // ClientPacketHandler.getPacketHandler(PacketIds.GUI).registerPacketHandler(
-        // PacketPowerConfigCommands.powerConfigCommands.openGui.toString(),
-        // new ClientRemoteOpenGui());
     }
 }

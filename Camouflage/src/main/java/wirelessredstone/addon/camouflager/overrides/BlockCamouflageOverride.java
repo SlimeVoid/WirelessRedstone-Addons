@@ -13,9 +13,10 @@ package wirelessredstone.addon.camouflager.overrides;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import wirelessredstone.addon.camouflager.core.CamouCore;
@@ -35,12 +36,12 @@ public class BlockCamouflageOverride implements IBlockRedstoneWirelessOverride {
     }
 
     @Override
-    public boolean beforeBlockRedstoneWirelessRemoved(World world, int i, int j, int k, int l, int m) {
-        TileEntity tileentity = world.getBlockTileEntity(i,
-                                                         j,
-                                                         k);
+    public boolean beforeBlockRedstoneWirelessRemoved(World world, int i, int j, int k, Block block, int m) {
+        TileEntity tileentity = world.getTileEntity(i,
+                                                    j,
+                                                    k);
         if (tileentity instanceof TileEntityRedstoneWireless) {
-            ((TileEntityRedstoneWireless) tileentity).onBlockRemoval(l,
+            ((TileEntityRedstoneWireless) tileentity).onBlockRemoval(block,
                                                                      m);
         }
         return (world.isRemote);
@@ -53,7 +54,7 @@ public class BlockCamouflageOverride implements IBlockRedstoneWirelessOverride {
     @Override
     public boolean beforeBlockRedstoneWirelessActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
         if (entityplayer.getCurrentEquippedItem() != null
-            && entityplayer.getCurrentEquippedItem().itemID == CamouCore.itemCamouflager.itemID) {
+            && entityplayer.getCurrentEquippedItem().getItem().getUnlocalizedName().equals(CamouCore.itemCamouflager.getUnlocalizedName())) {
             return true;
         }
 
@@ -65,12 +66,12 @@ public class BlockCamouflageOverride implements IBlockRedstoneWirelessOverride {
     }
 
     @Override
-    public boolean beforeBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, int l) {
+    public boolean beforeBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, Block block) {
         return (world.isRemote);
     }
 
     @Override
-    public void afterBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, int l) {
+    public void afterBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, Block block) {
     }
 
     @Override
@@ -84,9 +85,9 @@ public class BlockCamouflageOverride implements IBlockRedstoneWirelessOverride {
 
     @Override
     public boolean shouldOverrideTextureAt(IBlockAccess iblockaccess, int i, int j, int k, int side) {
-        TileEntity tileentity = iblockaccess.getBlockTileEntity(i,
-                                                                j,
-                                                                k);
+        TileEntity tileentity = iblockaccess.getTileEntity(i,
+                                                           j,
+                                                           k);
         if (tileentity != null
             && tileentity instanceof TileEntityRedstoneWireless) {
             return true;
@@ -95,10 +96,10 @@ public class BlockCamouflageOverride implements IBlockRedstoneWirelessOverride {
     }
 
     @Override
-    public Icon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int side, Icon output) {
-        TileEntity tileentity = iblockaccess.getBlockTileEntity(i,
-                                                                j,
-                                                                k);
+    public IIcon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int side, IIcon output) {
+        TileEntity tileentity = iblockaccess.getTileEntity(i,
+                                                           j,
+                                                           k);
         if (tileentity != null
             && tileentity instanceof TileEntityRedstoneWireless) {
             TileEntityRedstoneWireless tRW = (TileEntityRedstoneWireless) tileentity;

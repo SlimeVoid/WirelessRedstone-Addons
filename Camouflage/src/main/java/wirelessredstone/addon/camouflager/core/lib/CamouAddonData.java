@@ -15,8 +15,8 @@ public class CamouAddonData implements IRedstoneWirelessData {
         if (reference != null) {
             reference.writeToNBT(stackTag);
         }
-        nbttagcompound.setCompoundTag("BlockRef",
-                                      stackTag);
+        nbttagcompound.setTag("BlockRef",
+                              stackTag);
     }
 
     public void readFromNBT(NBTTagCompound nbttagcompound) {

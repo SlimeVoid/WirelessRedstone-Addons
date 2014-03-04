@@ -14,9 +14,8 @@ package wirelessredstone.addon.camouflager.proxy;
 import java.io.File;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.camouflager.core.WirelessCamouflager;
@@ -42,9 +41,9 @@ public class CamouCommonProxy implements ICommonProxy {
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == GuiLib.GUIID_DEVICE) {
-            TileEntity tileentity = world.getBlockTileEntity(x,
-                                                             y,
-                                                             z);
+            TileEntity tileentity = world.getTileEntity(x,
+                                                        y,
+                                                        z);
             if (tileentity != null
                 && tileentity instanceof TileEntityRedstoneWireless) {
                 return new ContainerCamouflagedRedstoneWireless(player.inventory, (TileEntityRedstoneWireless) tileentity);
@@ -70,17 +69,12 @@ public class CamouCommonProxy implements ICommonProxy {
 
     @Override
     public void init() {
-        NetworkRegistry.instance().registerGuiHandler(WirelessCamouflager.instance,
-                                                      WirelessCamouflager.proxy);
+        NetworkRegistry.INSTANCE.registerGuiHandler(WirelessCamouflager.instance,
+                                                    WirelessCamouflager.proxy);
     }
 
     @Override
-    public World getWorld(NetHandler handler) {
-        return null;
-    }
-
-    @Override
-    public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
+    public void login(INetHandler handler, NetworkManager manager) {
     }
 
     @Override
@@ -88,11 +82,6 @@ public class CamouCommonProxy implements ICommonProxy {
         // ///////////////////
         // Server Executor //
         // ///////////////////
-    }
-
-    @Override
-    public void connectionClosed(INetworkManager manager) {
-        // TODO Auto-generated method stub
     }
 
     @Override

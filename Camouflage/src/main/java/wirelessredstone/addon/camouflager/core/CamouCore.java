@@ -1,15 +1,15 @@
 package wirelessredstone.addon.camouflager.core;
 
-import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 import wirelessredstone.addon.camouflager.core.lib.IconLib;
 import wirelessredstone.addon.camouflager.core.lib.ItemLib;
 import wirelessredstone.addon.camouflager.items.ItemRedstoneWirelessCamouflager;
 import wirelessredstone.core.lib.ConfigurationLib;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class CamouCore {
 
@@ -32,8 +32,6 @@ public class CamouCore {
 
         WirelessCamouflager.proxy.addOverrides();
 
-        registerItems();
-
         WirelessCamouflager.proxy.registerRenderInformation();
 
         registerdRecipes();
@@ -45,7 +43,7 @@ public class CamouCore {
 
         wirelessconfig.load();
 
-        camouID = wirelessconfig.get(Configuration.CATEGORY_ITEM,
+        camouID = wirelessconfig.get(Configuration.CATEGORY_GENERAL,
                                      "Camouflager",
                                      camouID).getInt();
 
@@ -54,24 +52,8 @@ public class CamouCore {
 
     private static void initItems() {
         itemCamouflager = (new ItemRedstoneWirelessCamouflager(camouID)).setUnlocalizedName(ItemLib.CAMOUFLAGER).setTextureName(IconLib.CAMOUFLAGER);
-    }
-
-    /*
-     * private static void addOverrides() {
-     * TileEntityRedstoneWirelessCamouflagerOverride tileOverride = new
-     * TileEntityRedstoneWirelessCamouflagerOverride();
-     * TileEntityRedstoneWireless.addOverride(tileOverride);
-     * PacketWirelessCamouflagerOverride packetOverride = new
-     * PacketWirelessCamouflagerOverride();
-     * PacketWireless.addOverride(packetOverride); }
-     */
-
-    /**
-     * Registers the item names
-     */
-    private static void registerItems() {
-        LanguageRegistry.addName(itemCamouflager,
-                                 "Wireless Camouflager");
+        GameRegistry.registerItem(itemCamouflager,
+                                  ItemLib.CAMOUFLAGER);
     }
 
     private static void registerdRecipes() {
@@ -81,10 +63,10 @@ public class CamouCore {
                                        "RXR",
                                        "RGR",
                                        Character.valueOf('G'),
-                                       Block.glass,
+                                       Blocks.glass,
                                        Character.valueOf('R'),
-                                       Item.redstone,
+                                       Items.redstone,
                                        Character.valueOf('X'),
-                                       Block.blockIron });
+                                       Blocks.iron_block });
     }
 }
