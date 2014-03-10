@@ -12,7 +12,7 @@
 package wirelessredstone.addon.remote.items;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,9 +22,9 @@ import wirelessredstone.addon.remote.core.WirelessRemote;
 import wirelessredstone.addon.remote.core.lib.IconLib;
 import wirelessredstone.addon.remote.core.lib.ItemLib;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
-import wirelessredstone.client.network.handlers.ClientRedstoneEtherPacketHandler;
 import wirelessredstone.core.lib.GuiLib;
 import wirelessredstone.device.ItemWirelessDevice;
+import wirelessredstone.network.handlers.RedstoneEtherPacketHandler;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
 
 public class ItemRedstoneWirelessRemote extends ItemWirelessDevice {
@@ -34,7 +34,7 @@ public class ItemRedstoneWirelessRemote extends ItemWirelessDevice {
     }
 
     @Override
-    protected void registerIconList(IconRegister iconRegister) {
+    protected void registerIconList(IIconRegister iconRegister) {
         this.iconList[0] = iconRegister.registerIcon(IconLib.WIRELESS_REMOTE_OFF);
         this.iconList[1] = iconRegister.registerIcon(IconLib.WIRELESS_REMOTE_ON);
     }
@@ -61,18 +61,18 @@ public class ItemRedstoneWirelessRemote extends ItemWirelessDevice {
     @Override
     public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float a, float b, float c) {
         if (entityplayer.isSneaking()) {
-            TileEntity tileentity = world.getBlockTileEntity(i,
-                                                             j,
-                                                             k);
+            TileEntity tileentity = world.getTileEntity(i,
+                                                        j,
+                                                        k);
             if (tileentity != null) {
                 if (tileentity instanceof TileEntityRedstoneWirelessR) {
                     if (world.isRemote) {
-                        ClientRedstoneEtherPacketHandler.sendRedstoneEtherPacket(PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
-                                                                                 ((TileEntityRedstoneWirelessR) tileentity).getBlockCoord(0),
-                                                                                 ((TileEntityRedstoneWirelessR) tileentity).getBlockCoord(1),
-                                                                                 ((TileEntityRedstoneWirelessR) tileentity).getBlockCoord(2),
-                                                                                 this.getFreq(itemstack),
-                                                                                 false);
+                        RedstoneEtherPacketHandler.sendEtherPacketToServer(PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
+                                                                           ((TileEntityRedstoneWirelessR) tileentity).getBlockCoord(0),
+                                                                           ((TileEntityRedstoneWirelessR) tileentity).getBlockCoord(1),
+                                                                           ((TileEntityRedstoneWirelessR) tileentity).getBlockCoord(2),
+                                                                           this.getFreq(itemstack),
+                                                                           false);
                     }
                     return true;
                 }
@@ -86,9 +86,9 @@ public class ItemRedstoneWirelessRemote extends ItemWirelessDevice {
                                  (int) Math.round(entityplayer.posZ));
             return false;
         }
-        Block block = Block.blocksList[world.getBlockId(i,
-                                                        j,
-                                                        k)];
+        Block block = world.getBlock(i,
+                                     j,
+                                     k);
         if (!block.onBlockActivated(world,
                                     i,
                                     j,
@@ -126,7 +126,7 @@ public class ItemRedstoneWirelessRemote extends ItemWirelessDevice {
     }
 
     @Override
-    public void onUsingItemTick(ItemStack itemstack, EntityPlayer player, int count) {
+    public void onUsingTick(ItemStack itemstack, EntityPlayer player, int count) {
         WirelessRemote.proxy.activateRemote(player.getEntityWorld(),
                                             player,
                                             itemstack);

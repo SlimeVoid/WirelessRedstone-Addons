@@ -12,15 +12,12 @@
 package wirelessredstone.addon.remote.client.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import wirelessredstone.addon.remote.client.network.packets.executors.ClientRemoteChangeFreqExecutor;
 import wirelessredstone.addon.remote.client.presentation.gui.GuiRedstoneWirelessRemote;
 import wirelessredstone.addon.remote.client.tickhandler.ClientTickHandler;
@@ -28,13 +25,9 @@ import wirelessredstone.addon.remote.inventory.ContainerWirelessRemote;
 import wirelessredstone.addon.remote.inventory.WirelessRemoteDevice;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.addon.remote.proxy.WRemoteCommonProxy;
-import wirelessredstone.client.network.ClientPacketHandler;
+import wirelessredstone.core.WirelessRedstone;
 import wirelessredstone.core.lib.GuiLib;
-import wirelessredstone.network.packets.PacketRedstoneEther;
-import wirelessredstone.network.packets.PacketRedstoneWirelessCommands;
 import wirelessredstone.network.packets.core.PacketIds;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * WRClientProxy class
@@ -53,8 +46,7 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
 
     @Override
     public void init() {
-        TickRegistry.registerTickHandler(new ClientTickHandler(),
-                                         Side.CLIENT);
+        MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
         initGUIs();
         super.init();
     }
@@ -89,35 +81,14 @@ public class WRemoteClientProxy extends WRemoteCommonProxy {
     public void registerTileEntitySpecialRenderer(Class<? extends TileEntity> clazz) {
     }
 
-    /**
-     * Retrieves the world object with NetHandler parameters.
-     * 
-     * @return Minecraft world object.
-     */
-    @Override
-    public World getWorld(NetHandler handler) {
-        if (handler instanceof NetClientHandler) {
-            return ((NetClientHandler) handler).getPlayer().worldObj;
-        }
-        return null;
-    }
-
-    @Override
-    public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
-        World world = getWorld(handler);
-        if (world != null) {
-            ClientPacketHandler.sendPacket(((new PacketRedstoneEther(PacketRedstoneWirelessCommands.wirelessCommands.fetchEther.toString())).getPacket()));
-        }
-    }
-
     @Override
     public void initPacketHandlers() {
         super.initPacketHandlers();
         // ///////////////////
         // Client Handlers //
         // ///////////////////
-        ClientPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(PacketRemoteCommands.remoteCommands.changeFreq.toString(),
-                                                                                     new ClientRemoteChangeFreqExecutor());
+        WirelessRedstone.handler.getPacketHandler(PacketIds.DEVICE).registerClientExecutor(PacketRemoteCommands.remoteCommands.changeFreq.toString(),
+                                                                                           new ClientRemoteChangeFreqExecutor());
     }
 
     @Override

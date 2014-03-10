@@ -15,13 +15,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.inventory.WirelessRemoteDevice;
 import wirelessredstone.api.IDevicePacketExecutor;
-import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.PacketWirelessDevice;
+
+import com.slimevoid.library.network.PacketUpdate;
 
 public class RemoteDeactivateExecutor implements IDevicePacketExecutor {
 
     @Override
-    public void execute(PacketWireless p, World world, EntityPlayer entityplayer) {
+    public void execute(PacketUpdate p, World world, EntityPlayer entityplayer) {
         if (p instanceof PacketWirelessDevice) {
             PacketWirelessDevice packet = (PacketWirelessDevice) p;
             WirelessRemoteDevice.deactivateWirelessRemote(world,

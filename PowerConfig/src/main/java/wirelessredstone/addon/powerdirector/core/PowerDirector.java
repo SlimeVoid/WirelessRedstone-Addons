@@ -12,6 +12,7 @@
 package wirelessredstone.addon.powerdirector.core;
 
 import wirelessredstone.addon.powerdirector.core.lib.CoreLib;
+import wirelessredstone.addon.powerdirector.network.packets.PacketPowerDirectorCommands;
 import wirelessredstone.api.ICommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -20,7 +21,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 
 /**
  * Power Configurator ModLoader initializing class.
@@ -32,7 +32,6 @@ import cpw.mods.fml.common.network.NetworkMod;
         name = CoreLib.MOD_NAME,
         version = CoreLib.MOD_VERSION,
         dependencies = CoreLib.MOD_DEPENDENCIES)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 /**
  * FML fascade class.
  * This class uses FML annotations and sorts initialization.
@@ -60,7 +59,9 @@ public class PowerDirector {
      */
     @EventHandler
     public void WirelessRemoteInit(FMLInitializationEvent event) {
+        PacketPowerDirectorCommands.registerCommands();
 
+        PowerDirector.proxy.initPacketHandlers();
     }
 
     /**
@@ -70,6 +71,7 @@ public class PowerDirector {
      */
     @EventHandler
     public void WirelessRemotePreInit(FMLPreInitializationEvent event) {
+        PDCore.preInitialize();
     }
 
     /**
@@ -79,6 +81,5 @@ public class PowerDirector {
      */
     @EventHandler
     public void WirelessRemotePostInit(FMLPostInitializationEvent event) {
-        PDCore.initialize();
     }
 }

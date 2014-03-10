@@ -23,7 +23,7 @@ import wirelessredstone.core.lib.GuiLib;
 public class ItemRedstoneWirelessPowerDirector extends Item {
 
     public ItemRedstoneWirelessPowerDirector(int i) {
-        super(i);
+        super();
         setCreativeTab(WRCore.wirelessRedstone);
         maxStackSize = 1;
         setMaxDamage(64);
@@ -31,9 +31,9 @@ public class ItemRedstoneWirelessPowerDirector extends Item {
 
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float a, float b, float c) {
-        TileEntity tileentity = world.getBlockTileEntity(i,
-                                                         j,
-                                                         k);
+        TileEntity tileentity = world.getTileEntity(i,
+                                                    j,
+                                                    k);
 
         if (tileentity != null) {
             entityplayer.openGui(PowerDirector.instance,

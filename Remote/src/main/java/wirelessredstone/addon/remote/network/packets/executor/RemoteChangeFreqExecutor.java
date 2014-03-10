@@ -18,14 +18,15 @@ import wirelessredstone.addon.remote.core.lib.ItemLib;
 import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
 import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import wirelessredstone.api.IDevicePacketExecutor;
-import wirelessredstone.network.ServerPacketHandler;
-import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.network.packets.PacketWirelessDevice;
+
+import com.slimevoid.library.network.PacketUpdate;
+import com.slimevoid.library.util.helpers.PacketHelper;
 
 public class RemoteChangeFreqExecutor implements IDevicePacketExecutor {
 
     @Override
-    public void execute(PacketWireless p, World world, EntityPlayer entityplayer) {
+    public void execute(PacketUpdate p, World world, EntityPlayer entityplayer) {
         if (p instanceof PacketWirelessDevice) {
             PacketWirelessDevice packet = (PacketWirelessDevice) p;
             ItemStack heldItem = entityplayer.getHeldItem();
@@ -38,7 +39,7 @@ public class RemoteChangeFreqExecutor implements IDevicePacketExecutor {
                 String newFreq = String.valueOf(remote.getFreq(heldItem));
                 PacketWirelessDevice remotePacket = new PacketWirelessDevice(newFreq, false);
                 remotePacket.setCommand(PacketRemoteCommands.remoteCommands.changeFreq.toString());
-                ServerPacketHandler.broadcastPacket(remotePacket.getPacket());
+                PacketHelper.broadcastPacket(remotePacket);
             }
         }
     }

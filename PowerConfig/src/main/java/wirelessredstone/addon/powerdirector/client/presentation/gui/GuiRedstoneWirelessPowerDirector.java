@@ -25,7 +25,8 @@ import wirelessredstone.client.presentation.gui.GuiRedstoneWirelessInventory;
 import wirelessredstone.core.lib.GuiLib;
 import wirelessredstone.inventory.ContainerRedstoneWireless;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
-import cpw.mods.fml.common.network.PacketDispatcher;
+
+import com.slimevoid.library.util.helpers.PacketHelper;
 
 public class GuiRedstoneWirelessPowerDirector extends
         GuiRedstoneWirelessInventory {
@@ -129,31 +130,31 @@ public class GuiRedstoneWirelessPowerDirector extends
 
     private void notifyServer(String command, int side) {
         PacketPowerDirectorSettings packet = new PacketPowerDirectorSettings(command, side, this.inventory);
-        PacketDispatcher.sendPacketToServer(packet.getPacket());
+        PacketHelper.sendToServer(packet);
     }
 
     @Override
     protected void drawForegroundObjects(int i, int j) {
         drawStringBorder((xSize / 2)
-                                 - (fontRenderer.getStringWidth("Power Direction") / 2),
+                                 - (fontRendererObj.getStringWidth("Power Direction") / 2),
                          28,
                          (xSize / 2)
-                                 + (fontRenderer.getStringWidth("Power Direction") / 2));
-        fontRenderer.drawString("Power Direction",
-                                (xSize / 2)
-                                        - (fontRenderer.getStringWidth("Power Direction") / 2),
-                                28,
-                                0x404040);
+                                 + (fontRendererObj.getStringWidth("Power Direction") / 2));
+        fontRendererObj.drawString("Power Direction",
+                                   (xSize / 2)
+                                           - (fontRendererObj.getStringWidth("Power Direction") / 2),
+                                   28,
+                                   0x404040);
 
         drawStringBorder((xSize / 2)
-                                 - (fontRenderer.getStringWidth("Indirect Power") / 2),
+                                 - (fontRendererObj.getStringWidth("Indirect Power") / 2),
                          70,
                          (xSize / 2)
-                                 + (fontRenderer.getStringWidth("Indirect Power") / 2));
-        fontRenderer.drawString("Indirect Power",
-                                (xSize / 2)
-                                        - (fontRenderer.getStringWidth("Indirect Power") / 2),
-                                70,
-                                0x404040);
+                                 + (fontRendererObj.getStringWidth("Indirect Power") / 2));
+        fontRendererObj.drawString("Indirect Power",
+                                   (xSize / 2)
+                                           - (fontRendererObj.getStringWidth("Indirect Power") / 2),
+                                   70,
+                                   0x404040);
     }
 }

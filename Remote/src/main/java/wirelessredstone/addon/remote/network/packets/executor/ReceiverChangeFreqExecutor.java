@@ -13,18 +13,19 @@ package wirelessredstone.addon.remote.network.packets.executor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import wirelessredstone.api.IPacketExecutor;
 import wirelessredstone.core.lib.BlockLib;
-import wirelessredstone.network.handlers.ServerRedstoneEtherPacketHandler;
+import wirelessredstone.network.handlers.RedstoneEtherPacketHandler;
 import wirelessredstone.network.packets.PacketRedstoneEther;
-import wirelessredstone.network.packets.PacketWireless;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
 import wirelessredstone.tileentity.TileEntityRedstoneWirelessR;
+
+import com.slimevoid.library.IPacketExecutor;
+import com.slimevoid.library.network.PacketUpdate;
 
 public class ReceiverChangeFreqExecutor implements IPacketExecutor {
 
     @Override
-    public void execute(PacketWireless p, World world, EntityPlayer entityplayer) {
+    public void execute(PacketUpdate p, World world, EntityPlayer entityplayer) {
         if (p instanceof PacketRedstoneEther) {
             PacketRedstoneEther packet = (PacketRedstoneEther) p;
             TileEntityRedstoneWireless tileentity = BlockLib.getBlockTileEntity(world,
@@ -35,10 +36,10 @@ public class ReceiverChangeFreqExecutor implements IPacketExecutor {
                 && tileentity instanceof TileEntityRedstoneWirelessR) {
                 String freq = packet.getFreq();
                 tileentity.setFreq(freq);
-                tileentity.onInventoryChanged();
-                ServerRedstoneEtherPacketHandler.sendEtherTileToAllInRange(tileentity,
-                                                                           world,
-                                                                           16);
+                tileentity.markDirty();
+                RedstoneEtherPacketHandler.sendEtherTileToAllInRange(tileentity,
+                                                                     world,
+                                                                     16);
             }
 
         }

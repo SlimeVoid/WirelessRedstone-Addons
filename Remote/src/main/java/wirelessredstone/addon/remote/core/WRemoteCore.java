@@ -11,10 +11,10 @@
  */
 package wirelessredstone.addon.remote.core;
 
-import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 import wirelessredstone.addon.remote.core.lib.ItemLib;
 import wirelessredstone.addon.remote.items.ItemRedstoneWirelessRemote;
 import wirelessredstone.core.WRCore;
@@ -42,23 +42,20 @@ public class WRemoteCore {
      * Loads configurations and initializes objects. Loads ModLoader related
      * stuff.
      */
-    public static boolean initialize() {
-
+    public static void preInitialize() {
         loadConfig();
 
-        WirelessRemote.proxy.init();
-
-        WirelessRemote.proxy.initPacketHandlers();
-
         registerItems();
+
+        registerRecipes();
+    }
+
+    public static void initialize() {
+        WirelessRemote.proxy.init();
 
         WirelessRemote.proxy.addOverrides();
 
         WirelessRemote.proxy.registerRenderInformation();
-
-        registerRecipes();
-
-        return true;
     }
 
     /**
@@ -70,7 +67,7 @@ public class WRemoteCore {
 
         wirelessconfig.load();
 
-        remoteID = wirelessconfig.get(Configuration.CATEGORY_ITEM,
+        remoteID = wirelessconfig.get(Configuration.CATEGORY_GENERAL,
                                       ItemLib.REMOTE,
                                       remoteID).getInt();
         duraTogg = wirelessconfig.get(Configuration.CATEGORY_GENERAL,
@@ -90,6 +87,8 @@ public class WRemoteCore {
      */
     private static void registerItems() {
         itemRemote = (new ItemRedstoneWirelessRemote(remoteID)).setUnlocalizedName(ItemLib.REMOTE);
+        GameRegistry.registerItem(itemRemote,
+                                  ItemLib.REMOTE);
     }
 
     /**
@@ -113,7 +112,7 @@ public class WRemoteCore {
                                        "I",
                                        "T",
                                        Character.valueOf('I'),
-                                       Block.torchRedstoneActive,
+                                       Blocks.redstone_torch,
                                        Character.valueOf('T'),
                                        WRCore.blockWirelessT });
     }

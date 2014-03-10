@@ -11,9 +11,10 @@
  */
 package wirelessredstone.addon.powerdirector.core;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 import wirelessredstone.addon.powerdirector.core.lib.IconLib;
 import wirelessredstone.addon.powerdirector.core.lib.ItemLib;
 import wirelessredstone.addon.powerdirector.items.ItemRedstoneWirelessPowerDirector;
@@ -26,13 +27,11 @@ public class PDCore {
     public static Item    itemPowDir;
     public static int     pdID     = 6243;
 
-    public static boolean initialize() {
+    public static boolean preInitialize() {
 
         loadConfig();
 
         PowerDirector.proxy.init();
-
-        PowerDirector.proxy.initPacketHandlers();
 
         registerItems();
 
@@ -50,7 +49,7 @@ public class PDCore {
 
         wirelessconfig.load();
 
-        pdID = wirelessconfig.get(Configuration.CATEGORY_ITEM,
+        pdID = wirelessconfig.get(Configuration.CATEGORY_GENERAL,
                                   ItemLib.POWER_DIR,
                                   6243).getInt();
 
@@ -59,6 +58,8 @@ public class PDCore {
 
     private static void registerItems() {
         itemPowDir = (new ItemRedstoneWirelessPowerDirector(pdID)).setUnlocalizedName(ItemLib.POWER_DIR).setTextureName(IconLib.POWER_DIR);
+        GameRegistry.registerItem(itemPowDir,
+                                  ItemLib.POWER_DIR);
     }
 
     private static void registerRecipes() {
@@ -70,6 +71,6 @@ public class PDCore {
                                        Character.valueOf('X'),
                                        WRCore.blockWirelessR,
                                        Character.valueOf('R'),
-                                       Item.redstone });
+                                       Items.redstone });
     }
 }

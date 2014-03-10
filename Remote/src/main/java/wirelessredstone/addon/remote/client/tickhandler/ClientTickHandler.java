@@ -11,8 +11,6 @@
  */
 package wirelessredstone.addon.remote.client.tickhandler;
 
-import java.util.EnumSet;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,10 +22,11 @@ import org.lwjgl.input.Mouse;
 import wirelessredstone.addon.remote.core.WRemoteCore;
 import wirelessredstone.addon.remote.inventory.WirelessRemoteDevice;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 
-public class ClientTickHandler implements ITickHandler {
+public class ClientTickHandler {
 
     public static boolean mouseDown, wasMouseDown, remotePulsing;
     Minecraft             mc = FMLClientHandler.instance().getClient();
@@ -59,29 +58,18 @@ public class ClientTickHandler implements ITickHandler {
         mouseDown = Mouse.isButtonDown(1);
     }
 
-    @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        checkMouseClicks();
-    }
-
-    @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        if (mc.theWorld != null && mc.theWorld.isRemote) {
-            processRemote(mc.theWorld,
-                          mc.thePlayer,
-                          mc.currentScreen,
-                          mc.objectMouseOver);
+    @SubscribeEvent
+    public void tickStart(ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            checkMouseClicks();
+        } else {
+            if (mc.theWorld != null && mc.theWorld.isRemote) {
+                processRemote(mc.theWorld,
+                              mc.thePlayer,
+                              mc.currentScreen,
+                              mc.objectMouseOver);
+            }
         }
-    }
-
-    @Override
-    public EnumSet<TickType> ticks() {
-        return EnumSet.of(TickType.CLIENT);
-    }
-
-    @Override
-    public String getLabel() {
-        return "Client Tickhandler - Wireless Redstone - Remote";
     }
 
 }

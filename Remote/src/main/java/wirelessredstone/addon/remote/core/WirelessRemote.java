@@ -13,6 +13,7 @@ package wirelessredstone.addon.remote.core;
 
 import wirelessredstone.addon.remote.api.IRemoteCommonProxy;
 import wirelessredstone.addon.remote.core.lib.CoreLib;
+import wirelessredstone.addon.remote.network.packets.PacketRemoteCommands;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -20,7 +21,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 
 /**
  * Wireless Remote ModLoader initializing class.
@@ -32,7 +32,6 @@ import cpw.mods.fml.common.network.NetworkMod;
         name = CoreLib.MOD_NAME,
         version = CoreLib.MOD_VERSION,
         dependencies = CoreLib.MOD_DEPENDENCIES)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 /**
  * FML fascade class.
  * This class uses FML annotations and sorts initialization.
@@ -60,6 +59,7 @@ public class WirelessRemote {
      */
     @EventHandler
     public void WirelessRemotePreInit(FMLPreInitializationEvent event) {
+        WRemoteCore.preInitialize();
     }
 
     /**
@@ -70,6 +70,8 @@ public class WirelessRemote {
     @EventHandler
     public void WirelessRemoteInit(FMLInitializationEvent event) {
         WRemoteCore.initialize();
+        PacketRemoteCommands.registerCommands();
+        WirelessRemote.proxy.initPacketHandlers();
     }
 
     /**

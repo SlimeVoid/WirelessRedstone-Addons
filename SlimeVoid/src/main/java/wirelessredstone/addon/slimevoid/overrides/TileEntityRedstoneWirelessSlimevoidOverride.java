@@ -1,13 +1,14 @@
 package wirelessredstone.addon.slimevoid.overrides;
 
-import com.slimevoid.library.util.helpers.SlimevoidHelper;
-
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import wirelessredstone.api.ITileEntityRedstoneWirelessOverride;
 import wirelessredstone.api.IWirelessData;
 import wirelessredstone.tileentity.TileEntityRedstoneWireless;
+
+import com.slimevoid.library.util.helpers.SlimevoidHelper;
 
 public class TileEntityRedstoneWirelessSlimevoidOverride implements
         ITileEntityRedstoneWirelessOverride {
@@ -33,7 +34,7 @@ public class TileEntityRedstoneWirelessSlimevoidOverride implements
 
     @Override
     public boolean afterIsUseableByPlayer(TileEntityRedstoneWireless tile, EntityPlayer entityplayer, boolean output) {
-        return SlimevoidHelper.isUseableByPlayer(tile.worldObj,
+        return SlimevoidHelper.isUseableByPlayer(tile.getWorldObj(),
                                                  entityplayer,
                                                  tile.xCoord,
                                                  tile.yCoord,
@@ -88,7 +89,7 @@ public class TileEntityRedstoneWirelessSlimevoidOverride implements
     }
 
     @Override
-    public void onBlockRemoval(TileEntityRedstoneWireless tileEntityRedstoneWireless, int side, int metadata) {
+    public void onBlockRemoval(TileEntityRedstoneWireless tileEntityRedstoneWireless, Block block, int metadata) {
     }
 
 }

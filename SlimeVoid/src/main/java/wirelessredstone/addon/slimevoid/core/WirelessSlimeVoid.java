@@ -17,7 +17,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 
 /**
  * Wireless Slimevoid additions initializing class.
@@ -29,7 +28,6 @@ import cpw.mods.fml.common.network.NetworkMod;
         name = CoreLib.MOD_NAME,
         version = CoreLib.MOD_VERSION,
         dependencies = CoreLib.MOD_DEPENDENCIES)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class WirelessSlimeVoid {
 
     /**

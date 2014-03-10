@@ -13,8 +13,9 @@ package wirelessredstone.addon.powerdirector.overrides;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import wirelessredstone.addon.powerdirector.core.PDCore;
@@ -33,7 +34,7 @@ public class BlockRedstoneWirelessROverridePC implements
     }
 
     @Override
-    public boolean beforeBlockRedstoneWirelessRemoved(World world, int i, int j, int k, int l, int m) {
+    public boolean beforeBlockRedstoneWirelessRemoved(World world, int i, int j, int k, Block block, int m) {
         return false;
     }
 
@@ -45,7 +46,7 @@ public class BlockRedstoneWirelessROverridePC implements
     public boolean beforeBlockRedstoneWirelessActivated(World world, int i, int j, int k, EntityPlayer entityplayer) {
 
         if (entityplayer.getCurrentEquippedItem() != null
-            && entityplayer.getCurrentEquippedItem().itemID == PDCore.itemPowDir.itemID) {
+            && entityplayer.getCurrentEquippedItem().getItem() == PDCore.itemPowDir) {
             return true;
         }
 
@@ -57,12 +58,12 @@ public class BlockRedstoneWirelessROverridePC implements
     }
 
     @Override
-    public boolean beforeBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, int l) {
+    public boolean beforeBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, Block block) {
         return false;
     }
 
     @Override
-    public void afterBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, int l) {
+    public void afterBlockRedstoneWirelessNeighborChange(World world, int i, int j, int k, Block block) {
     }
 
     @Override
@@ -80,7 +81,7 @@ public class BlockRedstoneWirelessROverridePC implements
     }
 
     @Override
-    public Icon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int side, Icon output) {
+    public IIcon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k, int side, IIcon output) {
         return null;
     }
 

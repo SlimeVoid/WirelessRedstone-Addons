@@ -29,7 +29,9 @@ import wirelessredstone.api.IWirelessDevice;
 import wirelessredstone.data.WirelessCoordinates;
 import wirelessredstone.device.WirelessTransmitterDevice;
 import wirelessredstone.network.packets.PacketWirelessDevice;
-import cpw.mods.fml.common.network.PacketDispatcher;
+
+import com.slimevoid.library.util.helpers.PacketHelper;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -168,7 +170,7 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
     }
 
     @Override
-    public String getInvName() {
+    public String getInventoryName() {
         return ItemLib.REMOTE;
     }
 
@@ -185,6 +187,6 @@ public class WirelessRemoteDevice extends WirelessTransmitterDevice {
     public static void sendDeactivateRemote(World world, EntityPlayer entityplayer) {
         PacketWirelessDevice packet = new PacketWirelessDevice();
         packet.setCommand(PacketRemoteCommands.remoteCommands.deactivate.toString());
-        PacketDispatcher.sendPacketToServer(packet.getPacket());
+        PacketHelper.sendToServer(packet);
     }
 }

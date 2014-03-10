@@ -18,9 +18,8 @@ import java.util.TreeMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.remote.api.IRemoteCommonProxy;
@@ -33,9 +32,9 @@ import wirelessredstone.addon.remote.network.packets.executor.RemoteChangeFreqEx
 import wirelessredstone.addon.remote.network.packets.executor.RemoteDeactivateExecutor;
 import wirelessredstone.addon.remote.overrides.RedstoneEtherOverrideRemote;
 import wirelessredstone.api.IWirelessDevice;
+import wirelessredstone.core.WirelessRedstone;
 import wirelessredstone.core.lib.GuiLib;
 import wirelessredstone.ether.RedstoneEther;
-import wirelessredstone.network.ServerPacketHandler;
 import wirelessredstone.network.packets.core.PacketIds;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
@@ -75,20 +74,10 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
 
     @Override
     public void init() {
-        NetworkRegistry.instance().registerGuiHandler(WirelessRemote.instance,
-                                                      WirelessRemote.proxy);
-        PacketRemoteCommands.registerCommands();
+        NetworkRegistry.INSTANCE.registerGuiHandler(WirelessRemote.instance,
+                                                    WirelessRemote.proxy);
         WirelessRemoteDevice.remoteTransmitters = new HashMap();
         WirelessRemoteDevice.remoteWirelessCoords = new TreeMap();
-    }
-
-    @Override
-    public World getWorld(NetHandler handler) {
-        return null;
-    }
-
-    @Override
-    public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
     }
 
     @Override
@@ -96,20 +85,14 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
         // ///////////////////
         // Server Executor //
         // ///////////////////
-        ServerPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(PacketRemoteCommands.remoteCommands.changeFreq.toString(),
-                                                                                     new RemoteChangeFreqExecutor());
+        WirelessRedstone.handler.getPacketHandler(PacketIds.DEVICE).registerServerExecutor(PacketRemoteCommands.remoteCommands.changeFreq.toString(),
+                                                                                           new RemoteChangeFreqExecutor());
 
-        ServerPacketHandler.getPacketHandler(PacketIds.DEVICE).registerPacketHandler(PacketRemoteCommands.remoteCommands.deactivate.toString(),
-                                                                                     new RemoteDeactivateExecutor());
+        WirelessRedstone.handler.getPacketHandler(PacketIds.DEVICE).registerServerExecutor(PacketRemoteCommands.remoteCommands.deactivate.toString(),
+                                                                                           new RemoteDeactivateExecutor());
 
-        ServerPacketHandler.getPacketHandler(PacketIds.ETHER).registerPacketHandler(PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
-                                                                                    new ReceiverChangeFreqExecutor());
-    }
-
-    @Override
-    public void connectionClosed(INetworkManager manager) {
-        // TODO Auto-generated method stub
-
+        WirelessRedstone.handler.getPacketHandler(PacketIds.ETHER).registerServerExecutor(PacketRemoteCommands.remoteCommands.updateReceiver.toString(),
+                                                                                          new ReceiverChangeFreqExecutor());
     }
 
     @Override
@@ -138,5 +121,9 @@ public class WRemoteCommonProxy implements IRemoteCommonProxy {
             return remote.getFreq() == freq;
         }
         return false;
+    }
+
+    @Override
+    public void login(INetHandler handler, NetworkManager manager) {
     }
 }

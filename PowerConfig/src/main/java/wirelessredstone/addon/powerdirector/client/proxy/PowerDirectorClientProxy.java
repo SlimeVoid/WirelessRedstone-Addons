@@ -12,11 +12,7 @@
 package wirelessredstone.addon.powerdirector.client.proxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import wirelessredstone.addon.powerdirector.client.presentation.gui.GuiRedstoneWirelessPowerDirector;
@@ -59,9 +55,9 @@ public class PowerDirectorClientProxy extends PowerDirectorCommonProxy {
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        TileEntity tileentity = world.getBlockTileEntity(x,
-                                                         y,
-                                                         z);
+        TileEntity tileentity = world.getTileEntity(x,
+                                                    y,
+                                                    z);
         if (tileentity instanceof TileEntityRedstoneWireless) {
             // guiPowerD.assTileEntity((TileEntityRedstoneWireless) tileentity);
             return new GuiRedstoneWirelessPowerDirector(new ContainerRedstoneWireless((TileEntityRedstoneWireless) tileentity));// guiPowerD;
@@ -72,26 +68,6 @@ public class PowerDirectorClientProxy extends PowerDirectorCommonProxy {
     @Override
     public String getMinecraftDir() {
         return Minecraft.getMinecraft().mcDataDir.getPath();
-    }
-
-    /**
-     * Retrieves the world object with NetHandler parameters.
-     * 
-     * @return Minecraft world object.
-     */
-    @Override
-    public World getWorld(NetHandler handler) {
-        if (handler instanceof NetClientHandler) {
-            return ((NetClientHandler) handler).getPlayer().worldObj;
-        }
-        return null;
-    }
-
-    @Override
-    public void login(NetHandler handler, INetworkManager manager, Packet1Login login) {
-        World world = getWorld(handler);
-        if (world != null) {
-        }
     }
 
     @Override
