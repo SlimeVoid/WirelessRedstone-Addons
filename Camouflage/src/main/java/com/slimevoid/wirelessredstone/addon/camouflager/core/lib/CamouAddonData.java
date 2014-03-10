@@ -1,0 +1,37 @@
+package com.slimevoid.wirelessredstone.addon.camouflager.core.lib;
+
+import com.slimevoid.wirelessredstone.api.IRedstoneWirelessData;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+public class CamouAddonData implements IRedstoneWirelessData {
+
+    private ItemStack blockRef = null;
+
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        NBTTagCompound stackTag = new NBTTagCompound();
+        ItemStack reference = this.blockRef;
+
+        if (reference != null) {
+            reference.writeToNBT(stackTag);
+        }
+        nbttagcompound.setTag("BlockRef",
+                              stackTag);
+    }
+
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        if (nbttagcompound.hasKey("BlockRef")) {
+            NBTTagCompound stackTag = nbttagcompound.getCompoundTag("BlockRef");
+            this.blockRef = ItemStack.loadItemStackFromNBT(stackTag);
+        }
+    }
+
+    public ItemStack getBlockRef() {
+        return this.blockRef;
+    }
+
+    public void setBlockRef(ItemStack blockRef) {
+        this.blockRef = blockRef;
+    }
+}
