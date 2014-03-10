@@ -11,12 +11,13 @@
  */
 package com.slimevoid.wirelessredstone.addon.camouflager.client.presentation.gui;
 
-import com.slimevoid.wirelessredstone.addon.camouflager.core.lib.GuiLib;
-import com.slimevoid.wirelessredstone.addon.camouflager.inventory.ContainerCamouflagedRedstoneWireless;
-import com.slimevoid.wirelessredstone.client.presentation.gui.GuiRedstoneWirelessContainer;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+
+import com.slimevoid.wirelessredstone.addon.camouflager.core.lib.GuiLib;
+import com.slimevoid.wirelessredstone.addon.camouflager.core.lib.ItemLib;
+import com.slimevoid.wirelessredstone.addon.camouflager.inventory.ContainerCamouflagedRedstoneWireless;
+import com.slimevoid.wirelessredstone.client.presentation.gui.GuiRedstoneWirelessContainer;
 
 public class GuiRedstoneWirelessCamouflager extends
         GuiRedstoneWirelessContainer {
@@ -39,7 +40,7 @@ public class GuiRedstoneWirelessCamouflager extends
 
     @Override
     protected String getGuiName() {
-        return "Wireless Camouflager";
+        return ItemLib.CAMOUFLAGER;
     }
 
     @Override
