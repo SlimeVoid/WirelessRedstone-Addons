@@ -7,6 +7,6 @@ public class CoreLib {
     public static final String MOD_VERSION      = "1.0.0.0";
     public static final String MOD_DEPENDENCIES = "required-after:WirelessRedstoneCore";
     public static final String MOD_RESOURCES    = "wirelessremote";
-    public static final String CLIENT_PROXY     = "com.slimevoid.wirelessredstone.addon.remote.client.proxy.WRemoteClientProxy";
-    public static final String COMMON_PROXY     = "com.slimevoid.wirelessredstone.addon.remote.proxy.WRemoteCommonProxy";
+    public static final String CLIENT_PROXY     = "net.slimevoid.wirelessredstone.addon.remote.client.proxy.WRemoteClientProxy";
+    public static final String COMMON_PROXY     = "net.slimevoid.wirelessredstone.addon.remote.proxy.WRemoteCommonProxy";
 }
